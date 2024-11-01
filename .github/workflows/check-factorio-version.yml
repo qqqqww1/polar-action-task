@@ -19,11 +19,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
       - name: Install dependencies
         run: |
-          npm install
+          pnpm install --frozen-lockfile --prefer-offline
 
       - name: Run version checker
         env:
@@ -31,4 +38,4 @@ jobs:
           QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
           QINIU_BUCKET: ${{ secrets.QINIU_BUCKET }}
           QINIU_DOMAIN: ${{ secrets.QINIU_DOMAIN }}
-        run: node check-factorio-update.js
+        run: pnpm check-factorio-update
