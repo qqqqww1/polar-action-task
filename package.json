@@ -1,0 +1,19 @@
+{
+  "name": "polar-action-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "check-factorio-update": "node check-factorio-update.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "qiniu": "^7.13.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
