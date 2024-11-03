@@ -52,7 +52,7 @@ async function getCurrentVersion () {
 
 async function uploadToQiniu (localFile, key) {
   const putPolicy = new qiniu.rs.PutPolicy({
-    scope: qiniuConfig.bucket,
+    scope: qiniuConfig.bucket + ":" + key,
     insertOnly: 0
   });
   const uploadToken = putPolicy.uploadToken(mac);
