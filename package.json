@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "exec": "pnpm run check-factorio-update",
     "check-factorio-update": "node check-factorio-update.js"
   },
   "keywords": [],
