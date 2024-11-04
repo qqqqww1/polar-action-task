@@ -1,10 +1,10 @@
 // check-factorio-version.js
-const axios = require("axios");
-const qiniu = require("qiniu");
-const fs = require("fs");
-const path = require("path");
+import axios from "axios";
+import qiniu from "qiniu";
+import fs from "fs";
+import path from "path";
 
-require("dotenv").config();
+import "dotenv/config";
 
 // 七牛云配置
 const qiniuConfig = {
@@ -50,6 +50,26 @@ async function getCurrentVersion () {
   }
 }
 
+// 刷新七牛云 CDN 缓存
+async function refreshQiniuCDN(key) {
+  try {
+    await new Promise((resolve, reject) => {
+      new qiniu.cdn.CdnManager(mac).refreshUrls(
+        [`http://${qiniuConfig.domain}/${key}`],
+        (err, respBody, respInfo) => {
+          if (err) {
+            console.warn(`刷新缓存失败: ${err}`);
+          }
+          console.log(`刷新缓存成功: ${key}`);
+          resolve();
+        }
+      );
+    });
+  } catch (error) {
+    console.warn(`刷新缓存出错: ${error}`);
+  }
+}
+
 async function uploadToQiniu(localFile, key) {
   // 先删除已存在的文件
   const bucketManager = new qiniu.rs.BucketManager(mac, config);
@@ -59,6 +79,7 @@ async function uploadToQiniu(localFile, key) {
         if (err) {
           console.warn(`删除文件失败: ${err}`);
         }
+        console.log(`删除文件成功: ${key}`);
         resolve();
       });
     });
@@ -81,12 +102,14 @@ async function uploadToQiniu(localFile, key) {
       key,
       localFile,
       putExtra,
-      (err, body, info) => {
+      async (err, body, info) => {
         if (err) {
           reject(err);
           return;
         }
         if (info.statusCode === 200) {
+          // 刷新七牛云缓存
+          await refreshQiniuCDN(key);
           resolve(body);
         } else {
           reject(new Error(`上传失败，状态码: ${info.statusCode}`));

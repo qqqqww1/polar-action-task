@@ -15,11 +15,18 @@ importers:
         specifier: ^7.13.0
         version: 7.13.0
     devDependencies:
+      '@types/qiniu':
+        specifier: ^7.0.1
+        version: 7.0.1
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
 
 packages:
+
+  '@types/qiniu@7.0.1':
+    resolution: {integrity: sha512-3n2X3Dl89rDPGu/zROIN+Dqu9yUWN5cBbDiWwE/gRbE1X+7BhoGM2/eyM4GMstdLa8w3Ns9yW1fGDPYALuWwMA==}
+    deprecated: This is a stub types definition for qiniu (https://github.com/qiniu/nodejs-sdk). qiniu provides its own type definitions, so you don't need @types/qiniu installed!
 
   agentkeepalive@4.5.0:
     resolution: {integrity: sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==}
@@ -310,6 +317,12 @@ packages:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
 snapshots:
+
+  '@types/qiniu@7.0.1':
+    dependencies:
+      qiniu: 7.13.0
+    transitivePeerDependencies:
+      - proxy-agent
 
   agentkeepalive@4.5.0:
     dependencies:
