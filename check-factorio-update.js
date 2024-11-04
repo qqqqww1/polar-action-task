@@ -50,7 +50,23 @@ async function getCurrentVersion () {
   }
 }
 
-async function uploadToQiniu (localFile, key) {
+async function uploadToQiniu(localFile, key) {
+  // 先删除已存在的文件
+  const bucketManager = new qiniu.rs.BucketManager(mac, config);
+  try {
+    await new Promise((resolve, reject) => {
+      bucketManager.delete(qiniuConfig.bucket, key, (err, respBody, respInfo) => {
+        if (err) {
+          console.warn(`删除文件失败: ${err}`);
+        }
+        resolve();
+      });
+    });
+  } catch (error) {
+    console.warn(`删除文件出错: ${error}`);
+  }
+
+  // 上传新文件
   const putPolicy = new qiniu.rs.PutPolicy({
     scope: qiniuConfig.bucket + ":" + key,
     insertOnly: 0
